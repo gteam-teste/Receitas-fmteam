@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Clock, Users, Zap } from "lucide-react";
+import { Heart, Users, Zap } from "lucide-react";
 import { Recipe } from "@/data/recipes";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,8 @@ export function RecipeCard({ recipe, isFavorite, onToggleFavorite, onViewDetails
         return 'bg-green-100 text-green-800 border-green-200';
       case 'hipercalórico':
         return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'hiperproteico':
+        return 'bg-amber-100 text-amber-900 border-amber-200';
       case 'sem lactose':
         return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'vegano':
@@ -27,6 +29,8 @@ export function RecipeCard({ recipe, isFavorite, onToggleFavorite, onViewDetails
         return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
+
+  const categories = Array.isArray(recipe.categoria) ? recipe.categoria : [recipe.categoria];
 
   return (
     <Card className="recipe-card group cursor-pointer hover:shadow-lg transition-all duration-300">
@@ -44,7 +48,7 @@ export function RecipeCard({ recipe, isFavorite, onToggleFavorite, onViewDetails
             }}
             className="text-muted-foreground hover:text-primary"
           >
-            <Heart 
+            <Heart
               className={cn(
                 "h-5 w-5 transition-colors",
                 isFavorite && "fill-primary text-primary"
@@ -52,14 +56,18 @@ export function RecipeCard({ recipe, isFavorite, onToggleFavorite, onViewDetails
             />
           </Button>
         </div>
-        
+
         <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className={getCategoryColor(recipe.categoria)}>
-            {recipe.categoria}
-          </Badge>
-          <Badge variant="outline" className="border-primary text-primary">
-            {recipe.adocado_com}
-          </Badge>
+          {categories.map((c) => (
+            <Badge key={c} className={getCategoryColor(c)}>
+              {c}
+            </Badge>
+          ))}
+          {recipe.adocado_com && (
+            <Badge variant="outline" className="border-primary text-primary">
+              {recipe.adocado_com}
+            </Badge>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-4">

@@ -58,12 +58,19 @@ export function RecipeDetail({ recipe, isOpen, onClose, isFavorite, onToggleFavo
         <div className="space-y-6">
           {/* Tags e informações rápidas */}
           <div className="flex flex-wrap gap-2">
-            <Badge className={getCategoryColor(recipe.categoria)}>
-              {recipe.categoria}
-            </Badge>
+            {(Array.isArray(recipe.categoria) ? recipe.categoria : [recipe.categoria]).map((c) => (
+              <Badge key={c} className={getCategoryColor(c)}>
+                {c}
+              </Badge>
+            ))}
             <Badge variant="outline" className="border-primary text-primary">
-              Adoçado com {recipe.adocado_com}
+              {recipe.tipo}
             </Badge>
+            {recipe.adocado_com && (
+              <Badge variant="outline" className="border-primary text-primary">
+                Adoçado com {recipe.adocado_com}
+              </Badge>
+            )}
           </div>
 
           {/* Informações de rendimento e porção */}
